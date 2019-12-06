@@ -1,4 +1,10 @@
-﻿#include <vector>
+﻿/*Реализуйте структуру данных типа “множество строк” на основе динамической хеш-таблицы с открытой адресацией. 
+Хранимые строки непустые и состоят из строчных латинских букв.
+Хеш-функция строки должна быть реализована с помощью вычисления значения многочлена методом Горнера. Начальный размер таблицы должен быть равным 8-ми. 
+Перехеширование выполняйте при добавлении элементов в случае, когда коэффициент заполнения таблицы достигает 3/4.
+Структура данных должна поддерживать операции добавления строки в множество, 
+удаления строки из множества и проверки принадлежности данной строки множеству.Для разрешения коллизий используйте двойное хеширование.*/
+#include <vector>
 #include <string>
 #include <iostream>
 #include <assert.h>
@@ -10,18 +16,16 @@ public:
 	}
 	~hashtable() {};
 	bool insert(string const& key) {
-		if (body.size() < 10) {
-			TableOfPrimeNumber(PrimeNumber);
-		}
-		if (inserted * 4 >= 3*body.size()) {
-			int size = body.size() * 2;
-			int j = 0;
-			while (true) {
-				if (size >= PrimeNumber[j]) {
-					size = PrimeNumber[j];
+		if (inserted * 4 >= 3 * body.size()) {
+			int size;
+			for (int i = 0; i <15; ++i) {
+				if (PrimeNumber[i] == body.size()) {
+					size = PrimeNumber[i + 1];
 					break;
 				}
-				++j;
+				if (body.size() == 8) {
+					size = 17;
+				}
 			}
 			vector<item> body2(body.size());
 			for (int j = 0; j < body.size(); ++j) {
@@ -31,13 +35,24 @@ public:
 			body.resize(size);
 			for (int j = 0; j < body2.size(); ++j) {
 				if (body2[j].tag == item::BUSY) {
+					inserted--;
 					insert(body2[j].key);
 				}
 			}
 		}
-		for (auto h = hash(key); ; h = (h + hash2(key)) % body.size()) {
+		int h2;
+		if (body.size() == 8) {
+			h2 = 1;
+		}
+		else {
+			h2 = hash2(key);
+		}
+		int i = 0;
+		for (auto h = hash(key); i < 2 * body.size(); h = (h + h2) % body.size()) {
+			++i;
 			if (body[h].tag == item::EMPTY || body[h].tag==item::DELETED) {
 				body[h] = { key,item::BUSY };
+				inserted++;
 				return true;
 			}
 			assert(body[h].tag == item::BUSY);
@@ -47,12 +62,22 @@ public:
 		return true;
 	}
 	bool erase(string const& key) {
-		for (auto h = hash(key); ; h = (h + hash2(key)) % body.size()) {
+		int h2;
+		if (body.size() == 8) {
+			h2 = 1;
+		}
+		else {
+			h2 = hash2(key);
+		}
+		int i = 0;
+		for (auto h = hash(key); i < 2 * body.size(); h = (h + h2) % body.size()) {
+			++i;
 			if (body[h].tag == item::EMPTY) return false;
-			if (body[h].tag == item::DELETED) return false;
+			if (body[h].tag == item::DELETED) continue;
 			assert (body[h].tag == item::BUSY);
 			if (body[h].key == key) {
 				body[h].tag = item::DELETED;
+				inserted--;
 				return true;
 			}
 		}
@@ -60,17 +85,25 @@ public:
 		return false;
 	}
 	bool find(string const& key) {
-		for (auto h = hash(key); ; h = (h + hash2(key)) % body.size()) {
+		int h2;
+		if (body.size() == 8) {
+			h2 = 1;
+		}
+		else {
+			h2=hash2(key);
+		}
+		int i = 0;
+		for (auto h = hash(key); i<2*body.size(); h = (h + h2) % body.size()) {
+			++i;
 			if (body[h].tag == item::EMPTY) return false;
 			if (body[h].tag == item::DELETED) continue;
 			assert(body[h].tag == item::BUSY);
 			if (body[h].key == key) return true;
 		}
-		assert(false);
 		return false;
 	}
 	void TableOfPrimeNumber(vector<int>& PrimeNumber) {
-		for (int i = 0; i < 350; ++i) {
+		for (int i = 0; i < 350000; ++i) {
 			int k = 0;
 			for (int j = 2; 2 * j <= i; ++j) {
 				if (i % j == 0) {
@@ -95,23 +128,25 @@ private:
 		int tag;
 	};
 	vector<item> body;
-	vector<int> PrimeNumber;
+	vector<int> PrimeNumber = { 17, 37, 79, 163, 331, 673, 1361, 2729, 5471, 10949, 21911, 43853, 87719, 175447, 350899 };
 	size_t inserted = 0;
 	size_t hash(string const& key) {
 		int a = 31;
 		size_t h = 0;
 		for (int i = 0; i < key.size(); ++i) {
-			h = ((h + key[i]) * a) % key.size();
+			h = ((h+key[i]) * a); 
+			h = h % (body.size());
 		}
-		return h;
+		return (h);
 	}
 	size_t hash2(string const& key) {
-		int a = 29;
+		int a = 31;
 		size_t h = 0;
 		for (int i = 0; i < key.size(); ++i) {
-			h = (((h + key[i]) * a) % (key.size()));
+			h = ((h + key[i]) * a);
+			h = (h % (body.size()-1))+1;
 		}
-		return h;
+		return (h);
 	}
 };
 int main() {
