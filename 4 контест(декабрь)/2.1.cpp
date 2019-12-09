@@ -41,9 +41,6 @@ int result(vector <int> &mi, vector<int> &si) {
 			massa += mi[i];
 			++h;
 		}
-		else {
-			break;
-		}
 	}
 	return (h);
 }
@@ -70,7 +67,6 @@ int main() {
 		mi.push_back(m);
 		si.push_back(s);
 	}
-	int res = result(mi,si);
+	int res = result(mi, si);
 	cout << res;
-
 }
