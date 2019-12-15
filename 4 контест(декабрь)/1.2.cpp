@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <assert.h>
 using namespace std;
 class hashtable {
 public:
@@ -16,30 +15,7 @@ public:
 	}
 	~hashtable() {};
 	bool insert(string const& key) {
-		if (inserted * 4 >= 3 * body.size()) {
-			int size;
-			for (int i = 0; i <15; ++i) {
-				if (PrimeNumber[i] == body.size()) {
-					size = PrimeNumber[i + 1];
-					break;
-				}
-				if (body.size() == 8) {
-					size = 17;
-				}
-			}
-			vector<item> body2(body.size());
-			for (int j = 0; j < body.size(); ++j) {
-				body2[j] = body[j];
-			}
-			body.erase(body.begin(), body.end());
-			body.resize(size);
-			for (int j = 0; j < body2.size(); ++j) {
-				if (body2[j].tag == item::BUSY) {
-					inserted--;
-					insert(body2[j].key);
-				}
-			}
-		}
+		resizeTable();
 		int h2;
 		if (body.size() == 8) {
 			h2 = 1;
@@ -50,12 +26,11 @@ public:
 		int i = 0;
 		for (auto h = hash(key); i < 2 * body.size(); h = (h + h2) % body.size()) {
 			++i;
-			if (body[h].tag == item::EMPTY || body[h].tag==item::DELETED) {
+			if (body[h].tag == item::EMPTY || body[h].tag == item::DELETED) {
 				body[h] = { key,item::BUSY };
 				inserted++;
 				return true;
 			}
-			assert(body[h].tag == item::BUSY);
 			if (body[h].key == key)
 				return false;
 		}
@@ -74,14 +49,12 @@ public:
 			++i;
 			if (body[h].tag == item::EMPTY) return false;
 			if (body[h].tag == item::DELETED) continue;
-			assert (body[h].tag == item::BUSY);
 			if (body[h].key == key) {
 				body[h].tag = item::DELETED;
 				inserted--;
 				return true;
 			}
 		}
-		assert(false);
 		return false;
 	}
 	bool find(string const& key) {
@@ -97,22 +70,33 @@ public:
 			++i;
 			if (body[h].tag == item::EMPTY) return false;
 			if (body[h].tag == item::DELETED) continue;
-			assert(body[h].tag == item::BUSY);
 			if (body[h].key == key) return true;
 		}
 		return false;
 	}
-	void TableOfPrimeNumber(vector<int>& PrimeNumber) {
-		for (int i = 0; i < 350000; ++i) {
-			int k = 0;
-			for (int j = 2; 2 * j <= i; ++j) {
-				if (i % j == 0) {
-					k = 1;
+	void resizeTable() {
+		if (inserted * 4 >= 3 * body.size()) {
+			int size;
+			for (int i = 0; i < PrimeNumber.size(); ++i) {
+				if (PrimeNumber[i] >= body.size()) {
+					size = PrimeNumber[i + 1];
 					break;
 				}
+				if (body.size() == 8) {
+					size = 17;
+				}
 			}
-			if (k == 0) {
-				PrimeNumber.push_back(i);
+			vector<item> body2(body.size());
+			for (int j = 0; j < body.size(); ++j) {
+				body2[j] = body[j];
+			}
+			body.erase(body.begin(), body.end());
+			body.resize(size);
+			for (int j = 0; j < body2.size(); ++j) {
+				if (body2[j].tag == item::BUSY) {
+					inserted--;
+					insert(body2[j].key);
+				}
 			}
 		}
 	}
