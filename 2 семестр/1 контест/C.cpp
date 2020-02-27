@@ -73,12 +73,10 @@ public:
 			AllVariables.colors[i] = 0;
 		}
 		AllVariables.q2 = AllVariables.q;
-		vector<vector<int>> adj3 = adj;
-		adj = adj2;
 		int NumberOfStrong = 0;
 		while (AllVariables.q2.size() > 0) {
 			AllVariables.q.clear();
-			dfs(AllVariables.q2.back(), AllVariables);
+			dfs(AllVariables.q2.back(), AllVariables,adj2);
 			AllVariables.q2.pop_back();
 			for (int j = 0; j < AllVariables.q.size(); ++j) {
 				AllVariables.strongly_connected[AllVariables.q[j]] = NumberOfStrong;
@@ -87,22 +85,21 @@ public:
 				}
 			}
 		}
-		adj = adj3;
 		AllVariables.NumberOfStrong = NumberOfStrong;
 	}
 	void TheFirst(AllVariables& AllVariables) {
 		for (int i = 1; i < adj.size(); ++i) {
-			dfs(i, AllVariables);
+			dfs(i, AllVariables, adj);
 		}
 	}
-	void dfs(int s, AllVariables& AllVariables) {
+	void dfs(int s, AllVariables& AllVariables, vector<vector<int>> &adj) {
 		if (AllVariables.colors[s] != 0) {
 			return;
 		}
 		AllVariables.colors[s] = 1;
 		for (auto u : adj[s]) {
 			if (AllVariables.colors[u] == 0) {
-				dfs(u, AllVariables);
+				dfs(u, AllVariables, adj);
 			}
 		}
 		AllVariables.colors[s] = 2;
