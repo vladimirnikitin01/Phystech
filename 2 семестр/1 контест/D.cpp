@@ -17,6 +17,7 @@ struct segment {
 	set<int> points;
 	int type;//тип сегмента 0 или 1
 	vector<vector<int>> adj4;
+	int The_number_of_face;
 };
 class Graph {
 private:
@@ -123,25 +124,34 @@ public:
 
 	}
 	vector<ribs> rib(vector<int>& contact, vector<int>& cycle) {
-		vector<ribs> rib(adj.size());
-		int k = 0;//счетчик ребер
+		vector<ribs> rib;
 		for (int i = 0; i < adj.size(); ++i) {
-			k += adj[i].size();
-		}
-		for (int i = 0; i < k; ++i) {
 			for (int j = 0; j < adj[i].size(); ++j) {
 				if (i < adj[i][j]) {
-					rib[i].start = i;
-					rib[i].end = adj[i][j];
-					rib[i].status = 0;
-				}
-				else {
-					rib[i].start = adj[i][j];
-					rib[i].end = i;
-					rib[i].status = 0;
+					ribs that;
+					that.start = i;
+					that.end = adj[i][j];
+					that.status = 0;
+					//отмечаем 1 тех, которые есть в цикле
+					for (int l = 0; l < cycle.size()-1; ++l) {
+						if (cycle[l] < cycle[l + 1] && cycle[l]==i && cycle[l+1]==adj[i][j]) {
+							that.status = 1;
+						}
+						if (cycle[l] > cycle[l + 1] && cycle[l+1] == i && cycle[l] == adj[i][j]) {
+							that.status = 1;
+						}
+					}
+					if (cycle[cycle.size()-1] < cycle[0] && cycle[cycle.size() - 1] == i && cycle[0] == adj[i][j]) {
+						that.status = 1;
+					}
+					if (cycle[cycle.size() - 1] > cycle[0] && cycle[0] == i && cycle[cycle.size() - 1] == adj[i][j]) {
+						that.status = 1;
+					}
+					rib.push_back(that);
 				}
 			}
 		}
+
 		return(rib);
 	}
 	vector<segment> search_segments(vector<int>& cycle, vector<int>& contact, vector<ribs>& ribs) {
@@ -215,7 +225,7 @@ void planar(Graph& g) {
 	}
 }
 int checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& contact, vector<int>& cycle){
-	vector<ribs> ribs = value.rib;
+	vector<ribs> ribs = value.rib(contact, cycle);//после этой строки поставить цикл
 	vector<segment> Segments = value.search_segments(cycle, contact, ribs);
 	for (int i = 0; i < face.size(); ++i) {
 		set<int> point;
@@ -231,6 +241,7 @@ int checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& cont
 			}
 			if (k == Segments[j].points.size()) {
 				Segments[j].prioritet += 1;
+				Segments[j].The_number_of_face = i;
 			}
 		}
 	}
@@ -244,9 +255,57 @@ int checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& cont
 	}
 	if (min == 0) {
 		value.planary = 2;
+		return(2);
 	}
 	else if (Segments[k].type = 1) {
-		//добавляем этот отрезок сюда
+		//добавляем этот отрезок сюда;
+		vector<int> points;
+		for (auto u : Segments[k].points) {
+			points.push_back(u);
+		}
+		int First = points[0];
+		int Second = points[1];
+		int status_second = 0;//встречалось ли оно перед first или нет
+		int number_second = 0;
+		for (int i = 0; i < face[Segments[k].The_number_of_face].size(); ++i) {
+			if (face[Segments[k].The_number_of_face][i] == Second) {
+				status_second = 1;
+				number_second = i;
+			}
+			if (face[Segments[k].The_number_of_face][i] == First) {
+				vector<int> a;
+				vector<int> b;
+				if (status_second == 1) {
+					for (int j = number_second; j <= i; ++j) {
+						a.push_back(face[Segments[k].The_number_of_face][j]);
+					}
+					for (int j = i; j <=number_second; j=(j+1)% face[Segments[k].The_number_of_face].size()) {
+						b.push_back(face[Segments[k].The_number_of_face][j]);
+					}
+
+				}
+				else {
+					for (int j = i;; ++j) {
+						a.push_back(face[Segments[k].The_number_of_face][j]);
+						if (face[Segments[k].The_number_of_face][j] == Second) {
+							break;
+						}
+					}
+					for (int j = i;; j = (j + 1) % face[Segments[k].The_number_of_face].size()) {
+						if (face[Segments[k].The_number_of_face][j] == Second) {
+							status_second = 1;
+						}
+						if (status_second == 1) {
+							b.push_back(face[Segments[k].The_number_of_face][j]);
+						}
+						if (status_second == 1 && face[Segments[k].The_number_of_face][j] == First) {
+							break;
+						}
+					}
+				}
+				break;
+			}
+		}
 	}
 	else {
 		//добавляем цепь
