@@ -46,6 +46,37 @@ public:
 		adj[from].push_back(to);
 		adj[to].push_back(from);
 	}
+	void add2(vector<vector<int>>& adj3) {
+		adj = adj3;
+	}
+	void DFS_for_bridge(int s, vector<int>& parent, vector<int>& colors, vector<int>& low, vector<int>& d, int& time, vector<vector<int>>& bridge) {
+		if (colors[s] != 0) {
+			return;
+		}
+		colors[s] = 1;
+		time += 1;
+		d[s] = time;
+		low[s] = time;
+		for (auto u : adj[s]) {
+			if (u != parent[s]) {
+				if (colors[u] != 0) {
+					low[s] = std::min(low[s], d[u]);
+				}
+				else {
+					parent[u] = s;
+					DFS_for_bridge(u, parent, colors, low, d, time, bridge);
+					low[s] = std::min(low[s], low[u]);
+					if (low[u] > d[s]) {
+						vector<int> now(2);
+						now[0] = u;
+						now[1] = s;
+						bridge.push_back(now);
+					}
+				}
+			}
+			colors[u] = 2;
+		}
+	};
 	void dfs_for_connectivity(int s, vector<int>& p, set<int>& ListForOutput, vector<int>& colors, vector<set<int>>& adj3, vector<int>& contact) {
 		if (colors[s] != 0 || contact[s] == 1) {
 			return;
@@ -88,14 +119,14 @@ public:
 		}
 		colors[s] = 2;
 	}
-	void  dfs_for_chain(int s, vector<int>& p, vector<int>& colors, vector<int>& contact, int& count, int &status) {
+	void  dfs_for_chain(int s, vector<int>& p, vector<int>& colors, vector<int>& contact, int& count, int& status) {
 		if (colors[s] != 0) {
 			return;
 		}
 		colors[s] = 1;
 		count += 1;
 		for (auto u : adj[s]) {
-			if (count > 1 && status==0) {
+			if (count > 1 && status == 0) {
 				if (p[s] == u) {}
 				else if (colors[u] == 0) {
 					p[u] = s;
@@ -104,7 +135,7 @@ public:
 						status = 1;
 						return;
 					}
-					dfs_for_chain(u, p, colors, contact, count,status);
+					dfs_for_chain(u, p, colors, contact, count, status);
 				}
 				else if (colors[u] == 1) {
 					return;
@@ -114,7 +145,7 @@ public:
 				if (p[s] == u) {}
 				else if (colors[u] == 0 && contact[u] == 0) {
 					p[u] = s;
-					dfs_for_chain(u, p, colors, contact, count,status);
+					dfs_for_chain(u, p, colors, contact, count, status);
 				}
 				else if (colors[u] == 1) {
 					return;
@@ -124,16 +155,78 @@ public:
 		colors[s] = 2;
 	}
 	void remove_the_bridges() {
+		vector<int> parent;
+		parent.assign(adj.size(), -1);
+		vector<int> colors(adj.size());
+		vector<vector<int>> bridge;
+		vector<int> low(adj.size());
+		vector<int> d(adj.size());
+		int time = 0;
+		for (int i = 0; i < adj.size(); ++i) {
+			DFS_for_bridge(i, parent, colors, low, d, time, bridge);
+		}
+		for (int i = 0; i < bridge.size(); ++i) {
+			int First = bridge[i][0];
+			int Second = bridge[i][1];
+			for (int l = 0; l < adj[First].size(); ++l) {
+				if (adj[First][l] == Second) {
+					adj[First].erase(adj[First].begin() + l);
 
+				}
+			}
+			for (int l = 0; l < adj[Second].size(); ++l) {
+				if (adj[Second][l] == First) {
+					adj[Second].erase(adj[Second].begin() + l);
+
+				}
+			}
+		}
 	}
-	void remove_the_points_of_articulation() {
-
-	}
-	void checking_for_connectivity() {
-
+	void checking_for_connectivity(int s, vector<int>& p, set<int>& ListForOutput, vector<int>& colors) {
+		if (colors[s] != 0) {
+			return;
+		}
+		colors[s] = 1;
+		for (auto u : adj[s]) {
+			if (p[s] == u) {
+			}
+			else if (colors[u] == 0) {
+				p[u] = s;
+				ListForOutput.insert(s);
+				ListForOutput.insert(u);
+				checking_for_connectivity(u, p, ListForOutput, colors);
+			}
+			else if (colors[u] == 1) {
+				return;
+			}
+		}
+		if (adj[s].size() == 0) {
+			ListForOutput.insert(s);
+		}
 	}
 	void making_the_graph_ready_for_gamma(vector<Graph>& AllGraph) {
-
+		vector<int> p;
+		p.assign(adj.size(), -1);
+		vector<int> colors(adj.size());
+		for (int i = 0; i < adj.size(); ++i) {
+			set<int> ListForOutput;
+			checking_for_connectivity(i, p, ListForOutput, colors);
+			if (ListForOutput.size() > 0) {
+				vector < vector<int>> adj3(adj.size());
+				for (int i = 0; i < adj.size(); ++i) {
+					if (ListForOutput.count(i) > 0) {
+						for (int j = 0; j < adj[i].size(); ++j) {
+							if (ListForOutput.count(adj[i][j]) > 0) {
+								adj3[i].push_back(adj[i][j]);
+							}
+						}
+					}
+				}
+				Graph a(adj.size());
+				a.add2(adj3);
+				AllGraph.push_back(a);
+			}
+		}
 	}
 	vector<int> cycle_search() {
 		vector<int>colors(adj.size());
@@ -148,7 +241,7 @@ public:
 		}
 		if (Status_Cycle == false) {
 			vector<int> a(1);
-			a[1] = -1;
+			a[0] = -1;
 			return(a);
 		}
 		else {
@@ -195,7 +288,7 @@ public:
 	vector<segment> search_segments(vector<int>& cycle, vector<int>& contact, vector<ribs>& ribs) {
 		set<int> withOutG;
 		for (int i = 0; i < contact.size(); ++i) {
-			if (contact[i] == 0) {
+			if (contact[i] == 0 && adj[i].size() > 0) {
 				withOutG.insert(i);
 			}
 		}
@@ -278,6 +371,47 @@ public:
 		return(chain);
 	}
 };
+void include(vector<vector<int>>& face, vector<int>& chain, int The_number_of_face) {
+	vector<int> a;
+	vector<int> b;
+	int First = chain[0];
+	int F = 0;
+	int E = 0;
+	int End = chain[chain.size() - 1];
+	int edge = The_number_of_face;
+	for (int i = 0; i < face[edge].size(); ++i) {
+		if (face[edge][i] == First) {
+			F = i;
+		}
+		if (face[edge][i] == End) {
+			E = i;
+		}
+	}
+	if (F > E) {
+		vector<int> reser(chain.size());
+		for (int i = 0; i < chain.size(); ++i) {
+			reser[i] = chain[chain.size() - 1 - i];
+		}
+		chain = reser;
+		int a = F;
+		F = E;
+		E = a;
+	}
+	for (int i = F; i <= E; ++i) {
+		a.push_back(face[edge][i]);
+	}
+	for (int i = chain.size() - 2; i > 0; --i) {
+		a.push_back(chain[i]);
+	}
+	for (int i = E; i != F; i = (i + 1) % (face[edge].size())) {
+		b.push_back(face[edge][i]);
+	}
+	for (int i = 0; i < chain.size() - 1; ++i) {
+		b.push_back(chain[i]);
+	}
+	face[edge] = a;
+	face.push_back(b);
+}
 void checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& contact, vector<int>& cycle) {
 	vector<ribs> ribs = value.rib(contact, cycle);//после этой строки поставить цикл
 	while (true) {
@@ -302,7 +436,7 @@ void checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& con
 						k1 += 1;
 					}
 				}
-				if (k + k1 == Segments[j].points.size()) {
+				if (k == Segments[j].points.size() - k1) {
 					Segments[j].prioritet += 1;
 					Segments[j].The_number_of_face = i;
 				}
@@ -334,89 +468,12 @@ void checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& con
 					break;
 				}
 			}
-			int status_second = 0;//встречалось ли оно перед first или нет
-			int number_second = 0;
-			for (int i = 0; i < face[Segments[k].The_number_of_face].size(); ++i) {
-				if (face[Segments[k].The_number_of_face][i] == Second) {
-					status_second = 1;
-					number_second = i;
-				}
-				if (face[Segments[k].The_number_of_face][i] == First) {
-					vector<int> a;
-					vector<int> b;
-					if (status_second == 1) {
-						for (int j = number_second; j <= i; ++j) {
-							a.push_back(face[Segments[k].The_number_of_face][j]);
-						}
-						for (int j = i; j <= number_second; j = (j + 1) % face[Segments[k].The_number_of_face].size()) {
-							b.push_back(face[Segments[k].The_number_of_face][j]);
-						}
-
-					}
-					else {
-						for (int j = i;; ++j) {
-							a.push_back(face[Segments[k].The_number_of_face][j]);
-							if (face[Segments[k].The_number_of_face][j] == Second) {
-								break;
-							}
-						}
-						for (int j = i;; j = (j + 1) % face[Segments[k].The_number_of_face].size()) {
-							if (face[Segments[k].The_number_of_face][j] == Second) {
-								status_second = 1;
-							}
-							if (status_second == 1) {
-								b.push_back(face[Segments[k].The_number_of_face][j]);
-							}
-							if (status_second == 1 && face[Segments[k].The_number_of_face][j] == First) {
-								break;
-							}
-						}
-					}
-					face[Segments[k].The_number_of_face] = a;
-					face.push_back(b);
-					break;
-				}
-			}
+			include(face, points, Segments[k].The_number_of_face);
 		}
 		else {
 			//добавляем цепь и ищем ее
 			vector<int> chain = value.chain(cycle, contact, ribs, Segments[k]);
-			vector<int> a;
-			vector<int> b;
-			int First = chain[0];
-			int F = 0;
-			int E = 0;
-			int End = chain[chain.size() - 1];
-			int edge = Segments[k].The_number_of_face;
-			for (int i = 0; i < face[edge].size(); ++i) {
-				if (face[edge][i] == First) {
-					F = i;
-				}
-				if (face[edge][i] == End) {
-					E = i;
-				}
-			}
-			if (F > E) {
-				vector<int> reser(face[edge].size());
-				for (int i = 0; i < face[edge].size(); ++i) {
-					reser[i] = face[edge][face[edge].size() - 1 - i];
-				}
-				face[edge] = reser;
-			}
-			for (int i = F; i < E; ++i) {
-				a.push_back(face[edge][i]);
-			}
-			for (int i = chain.size() - 1; i > 0; --i) {
-				a.push_back(chain[i]);
-			}
-			for (int i = E; i != F; i = (i + 1) % (face[edge].size())) {
-				b.push_back(face[edge][i]);
-			}
-			for (int i = 0; i < chain.size() - 1; ++i) {
-				b.push_back(chain[i]);
-			}
-			face[edge] = a;
-			face.push_back(b);
+			include(face, chain, Segments[k].The_number_of_face);
 			for (int i = 0; i < chain.size() - 1; ++i) {
 				int start = chain[i];
 				int end = chain[i + 1];
@@ -432,7 +489,7 @@ void checking_segments(vector<vector<int>>& face, Graph& value, vector<int>& con
 }
 void gamma_algorithm(Graph& value) {
 	vector<int> cycle = value.cycle_search();
-	if (cycle.size() == 0) {
+	if (cycle[0] == -1) {
 		value.planary = 1;
 	}
 	else {
@@ -446,16 +503,9 @@ void gamma_algorithm(Graph& value) {
 		checking_segments(face, value, contact, cycle);
 	}
 }
-void planarTEST(Graph& g) {
-	gamma_algorithm(g);
-	if (g.planary == 2) {
-		cout << "NO";
-		return;
-	}
-	cout << "YES";
-}
 void planar(Graph& g) {
 	vector<Graph> AllGraph;
+	g.remove_the_bridges();
 	g.making_the_graph_ready_for_gamma(AllGraph);
 	for (int i = 0; i < AllGraph.size(); ++i) {
 		gamma_algorithm(AllGraph[i]);
@@ -463,8 +513,8 @@ void planar(Graph& g) {
 			cout << "NO";
 			return;
 		}
-		cout << "YES";
 	}
+	cout << "YES";
 }
 int main()
 {
@@ -476,5 +526,5 @@ int main()
 		cin >> from >> to;
 		g.add(from, to);
 	}
-	planarTEST(g);
+	planar(g);
 }
