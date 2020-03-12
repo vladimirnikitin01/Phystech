@@ -22,13 +22,11 @@ struct segment {
 class Graph {
 private:
 	vector<vector<int>> adj;
-	vector<vector<int>> adj2;
 public:
 	int planary = 0;// 0 я еще не знаю, 1 планарен, 2 не планарен
 	Graph(int n)
 	{
 		adj.resize(n);
-		adj2.resize(n);
 	}
 	int size() {
 		return(adj.size());
@@ -213,12 +211,10 @@ public:
 			checking_for_connectivity(i, p, ListForOutput, colors);
 			if (ListForOutput.size() > 0) {
 				vector < vector<int>> adj3(adj.size());
-				for (int i = 0; i < adj.size(); ++i) {
-					if (ListForOutput.count(i) > 0) {
-						for (int j = 0; j < adj[i].size(); ++j) {
-							if (ListForOutput.count(adj[i][j]) > 0) {
-								adj3[i].push_back(adj[i][j]);
-							}
+				for (auto u : ListForOutput) {
+					for (int i = 0; i < adj[u].size(); ++i) {
+						if (ListForOutput.count(adj[u][i]) > 0) {
+							adj3[u].push_back(adj[u][i]);
 						}
 					}
 				}
