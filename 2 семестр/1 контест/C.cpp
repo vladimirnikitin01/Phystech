@@ -1,7 +1,7 @@
-﻿/*Фрэнку опять прилетел новый заказ. Однако в этот раз город играет по очень странным правилам: 
+﻿/*Фрэнку опять прилетел новый заказ. Однако в этот раз город играет по очень странным правилам:
 все дороги в городе односторонние и связывают только офисы нанимателей перевозчика. Множество офисов, между любыми двумя из которых существует путь,
 образуют квартал, если нельзя добавить никакие другие, чтобы условие выполнялось. Фрэнку интересно,
-каково минимальное количество односторонних дорог нужно ещё построить, чтобы весь город стал квраталом. 
+каково минимальное количество односторонних дорог нужно ещё построить, чтобы весь город стал квраталом.
 Первая строка содержит пару целых чисел n и m (1 ≤ n ≤ 105, 0 ≤ m ≤ 105) — количество вершин и рёбер заданного ориентированного графа.
 Следующие m строк содержат описания рёбер, по одному в строке. Каждая из строк содержит по два целых числа a и b (1 ≤ a, b ≤ n) — начало и конец ребра.*/
 #include <vector>
@@ -44,6 +44,7 @@ public:
 		return(result);
 	}
 	int SearchSinksAndSources(AllVariables& AllVariables) {
+		//идея алгоритма в том, что мы должны превратить компоненты сильной связности в одну вершину. А затем считаем количество новых вершин(из которых 0 ребер выходит/0 ребер приходит). И ищем максимум из двух данных чисел
 		AllVariables.sinks.resize(AllVariables.NumberOfStrong);
 		AllVariables.sources.resize(AllVariables.NumberOfStrong);
 		for (int i = 1; i < adj.size(); ++i) {
@@ -76,7 +77,7 @@ public:
 		int NumberOfStrong = 0;
 		while (AllVariables.q2.size() > 0) {
 			AllVariables.q.clear();
-			dfs(AllVariables.q2.back(), AllVariables,adj2);
+			dfs(AllVariables.q2.back(), AllVariables, adj2);
 			AllVariables.q2.pop_back();
 			for (int j = 0; j < AllVariables.q.size(); ++j) {
 				AllVariables.strongly_connected[AllVariables.q[j]] = NumberOfStrong;
@@ -92,7 +93,7 @@ public:
 			dfs(i, AllVariables, adj);
 		}
 	}
-	void dfs(int s, AllVariables& AllVariables, vector<vector<int>> &adj) {
+	void dfs(int s, AllVariables& AllVariables, vector<vector<int>>& adj) {
 		if (AllVariables.colors[s] != 0) {
 			return;
 		}
