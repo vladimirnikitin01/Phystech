@@ -26,10 +26,12 @@ public:
 		FromLeon = BFS(Leon);
 		FromMatilda = BFS(Matilda);
 		FromMilk = BFS(Milk);
+		//только что нашли расстояния до каждой точки от Леона, Молока и Матильды
 		for (int i = 1; i < adj.size(); ++i) {
 			SumOfTheDistances[i] = FromLeon[i] + FromMatilda[i] + FromMilk[i];
 		}
 		int dist = *min_element(SumOfTheDistances.begin() + 1, SumOfTheDistances.end());
+		// а теперь ищем минимальную сумму расстояний для каждой точки
 		return (dist);
 	}
 	vector<int> BFS(int s) {
@@ -55,7 +57,7 @@ public:
 int main()
 {
 	int n, m, Leon, Matilda, Milk;
-	cin >> n >> m >> Leon >> Matilda>> Milk;
+	cin >> n >> m >> Leon >> Matilda >> Milk;
 	Graph g(n + 1);
 	for (int i = 0; i < m; ++i) {
 		int from, to;
