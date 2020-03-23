@@ -1,30 +1,34 @@
-/*Напишите класс BigInteger для работы с длинными целыми числами.Должны поддерживаться операции :
-сложение, вычитание, умножение, деление, остаток по модулю, работающие так же, как и для int; составное присваивание с этими операциями.
-Умножение должно работать за o - малое от n2.
-унарный минус, префиксный и постфиксный инкремент и декремент.Префиксный инкремент и декремент должны работать за O(1) в среднем.
-операторы сравнения == != < > <= >=
-вывод в поток и ввод из потока
-метод toString(), возвращающий строковое представление числа
-конструирование из int(в том числе неявное преобразование, когда это надо)
-неявное преобразование в bool, когда это надо(должно работать в условных выражениях)
-опционально - литеральный суффикс bi для написания литералов типа BigInteger, см.справку здесь https ://en.cppreference.com/w/cpp/language/user_literal
-Используя класс BigInteger, напишите класс Rational для работы с рациональными числами сколь угодно высокой точности.
-Числа Rational должны представляться в виде несократимых обыкновенных дробей, где числитель и знаменатель – сколь угодно длинные целые числа.
-Должны поддерживаться операции :конструктор из BigInteger, из int
-сложение, вычитание, умножение, деление, составное присваивание с этими операциями
-унарный минус
-операторы сравнения == != < > <= >=
-метод toString(), возвращающий строковое представление числа(вида[минус]числитель / знаменатель),
-где числитель и знаменатель - взаимно простые числа; если число на самом деле целое, то знаменатель выводить не надо
-метод asDecimal(sizet precision = 0), возвращающий строковое представление числа в виде десятичной дроби с precision знаками после запятой
-оператор приведения к double
-В вашем файле должна отсутствовать функция main(), а сам файл должен называться biginteger.h.В качестве компилятора необходимо указывать Make.
-Ваш код будет вставлен посредством команды #include<biginteger.h> в программу, содержащую тесты; вследствие этого код необходимо отправлять
-в файле со строго соответствующим именем!*/
-
+п»ї/*Р’ СЌС‚РѕР№ Р·Р°РґР°С‡Рµ СЂР°Р·СЂРµС€Р°РµС‚СЃСЏ РїРѕРґРєР»СЋС‡Р°С‚СЊ <iostream>, <vector> Рё <string> Рё С‚РѕР»СЊРєРѕ РёС….
+РќР°РїРёС€РёС‚Рµ РєР»Р°СЃСЃ BigInteger РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РґР»РёРЅРЅС‹РјРё С†РµР»С‹РјРё С‡РёСЃР»Р°РјРё. Р”РѕР»Р¶РЅС‹ РїРѕРґРґРµСЂР¶РёРІР°С‚СЊСЃСЏ РѕРїРµСЂР°С†РёРё:
+СЃР»РѕР¶РµРЅРёРµ, РІС‹С‡РёС‚Р°РЅРёРµ, СѓРјРЅРѕР¶РµРЅРёРµ, РґРµР»РµРЅРёРµ, РѕСЃС‚Р°С‚РѕРє РїРѕ РјРѕРґСѓР»СЋ, СЂР°Р±РѕС‚Р°СЋС‰РёРµ С‚Р°Рє Р¶Рµ, РєР°Рє Рё РґР»СЏ int; СЃРѕСЃС‚Р°РІРЅРѕРµ РїСЂРёСЃРІР°РёРІР°РЅРёРµ СЃ СЌС‚РёРјРё РѕРїРµСЂР°С†РёСЏРјРё.
+РЈРјРЅРѕР¶РµРЅРёРµ РґРѕР»Р¶РЅРѕ СЂР°Р±РѕС‚Р°С‚СЊ Р·Р° o-РјР°Р»РѕРµ РѕС‚ n2.
+СѓРЅР°СЂРЅС‹Р№ РјРёРЅСѓСЃ, РїСЂРµС„РёРєСЃРЅС‹Р№ Рё РїРѕСЃС‚С„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ Рё РґРµРєСЂРµРјРµРЅС‚. РџСЂРµС„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ Рё РґРµРєСЂРµРјРµРЅС‚ РґРѕР»Р¶РЅС‹ СЂР°Р±РѕС‚Р°С‚СЊ Р·Р° O(1) РІ СЃСЂРµРґРЅРµРј.
+РѕРїРµСЂР°С‚РѕСЂС‹ СЃСЂР°РІРЅРµРЅРёСЏ == != < > <= >=
+РІС‹РІРѕРґ РІ РїРѕС‚РѕРє Рё РІРІРѕРґ РёР· РїРѕС‚РѕРєР°
+РјРµС‚РѕРґ toString(), РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ СЃС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ С‡РёСЃР»Р°
+РєРѕРЅСЃС‚СЂСѓРёСЂРѕРІР°РЅРёРµ РёР· int (РІ С‚РѕРј С‡РёСЃР»Рµ РЅРµСЏРІРЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ, РєРѕРіРґР° СЌС‚Рѕ РЅР°РґРѕ)
+РЅРµСЏРІРЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІ bool, РєРѕРіРґР° СЌС‚Рѕ РЅР°РґРѕ (РґРѕР»Р¶РЅРѕ СЂР°Р±РѕС‚Р°С‚СЊ РІ СѓСЃР»РѕРІРЅС‹С… РІС‹СЂР°Р¶РµРЅРёСЏС…)
+РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ - Р»РёС‚РµСЂР°Р»СЊРЅС‹Р№ СЃСѓС„С„РёРєСЃ bi РґР»СЏ РЅР°РїРёСЃР°РЅРёСЏ Р»РёС‚РµСЂР°Р»РѕРІ С‚РёРїР° BigInteger, СЃРј. СЃРїСЂР°РІРєСѓ Р·РґРµСЃСЊ https://en.cppreference.com/w/cpp/language/user_literal
+РСЃРїРѕР»СЊР·СѓСЏ РєР»Р°СЃСЃ BigInteger, РЅР°РїРёС€РёС‚Рµ РєР»Р°СЃСЃ Rational РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ СЂР°С†РёРѕРЅР°Р»СЊРЅС‹РјРё С‡РёСЃР»Р°РјРё СЃРєРѕР»СЊ СѓРіРѕРґРЅРѕ РІС‹СЃРѕРєРѕР№ С‚РѕС‡РЅРѕСЃС‚Рё. 
+Р§РёСЃР»Р° Rational РґРѕР»Р¶РЅС‹ РїСЂРµРґСЃС‚Р°РІР»СЏС‚СЊСЃСЏ РІ РІРёРґРµ РЅРµСЃРѕРєСЂР°С‚РёРјС‹С… РѕР±С‹РєРЅРѕРІРµРЅРЅС‹С… РґСЂРѕР±РµР№, РіРґРµ С‡РёСЃР»РёС‚РµР»СЊ Рё Р·РЅР°РјРµРЅР°С‚РµР»СЊ вЂ“ СЃРєРѕР»СЊ СѓРіРѕРґРЅРѕ РґР»РёРЅРЅС‹Рµ С†РµР»С‹Рµ С‡РёСЃР»Р°. 
+Р”РѕР»Р¶РЅС‹ РїРѕРґРґРµСЂР¶РёРІР°С‚СЊСЃСЏ РѕРїРµСЂР°С†РёРё:
+РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· BigInteger, РёР· int
+СЃР»РѕР¶РµРЅРёРµ, РІС‹С‡РёС‚Р°РЅРёРµ, СѓРјРЅРѕР¶РµРЅРёРµ, РґРµР»РµРЅРёРµ, СЃРѕСЃС‚Р°РІРЅРѕРµ РїСЂРёСЃРІР°РёРІР°РЅРёРµ СЃ СЌС‚РёРјРё РѕРїРµСЂР°С†РёСЏРјРё
+СѓРЅР°СЂРЅС‹Р№ РјРёРЅСѓСЃ
+РѕРїРµСЂР°С‚РѕСЂС‹ СЃСЂР°РІРЅРµРЅРёСЏ == != < > <= >=
+РјРµС‚РѕРґ toString(), РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ СЃС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ С‡РёСЃР»Р° (РІРёРґР° [РјРёРЅСѓСЃ]С‡РёСЃР»РёС‚РµР»СЊ/Р·РЅР°РјРµРЅР°С‚РµР»СЊ), РіРґРµ С‡РёСЃР»РёС‚РµР»СЊ Рё Р·РЅР°РјРµРЅР°С‚РµР»СЊ - РІР·Р°РёРјРЅРѕ РїСЂРѕСЃС‚С‹Рµ С‡РёСЃР»Р°;
+РµСЃР»Рё С‡РёСЃР»Рѕ РЅР° СЃР°РјРѕРј РґРµР»Рµ С†РµР»РѕРµ, С‚Рѕ Р·РЅР°РјРµРЅР°С‚РµР»СЊ РІС‹РІРѕРґРёС‚СЊ РЅРµ РЅР°РґРѕ
+РјРµС‚РѕРґ asDecimal(sizet precision=0), РІРѕР·РІСЂР°С‰Р°СЋС‰РёР№ СЃС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ С‡РёСЃР»Р° РІ РІРёРґРµ РґРµСЃСЏС‚РёС‡РЅРѕР№ РґСЂРѕР±Рё СЃ precision Р·РЅР°РєР°РјРё РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№
+РѕРїРµСЂР°С‚РѕСЂ РїСЂРёРІРµРґРµРЅРёСЏ Рє double
+Р’ РІР°С€РµРј С„Р°Р№Р»Рµ РґРѕР»Р¶РЅР° РѕС‚СЃСѓС‚СЃС‚РІРѕРІР°С‚СЊ С„СѓРЅРєС†РёСЏ main(), Р° СЃР°Рј С„Р°Р№Р» РґРѕР»Р¶РµРЅ РЅР°Р·С‹РІР°С‚СЊСЃСЏ biginteger.h. Р’ РєР°С‡РµСЃС‚РІРµ РєРѕРјРїРёР»СЏС‚РѕСЂР° РЅРµРѕР±С…РѕРґРёРјРѕ СѓРєР°Р·С‹РІР°С‚СЊ Make. 
+Р’Р°С€ РєРѕРґ Р±СѓРґРµС‚ РІСЃС‚Р°РІР»РµРЅ РїРѕСЃСЂРµРґСЃС‚РІРѕРј РєРѕРјР°РЅРґС‹ #include<biginteger.h> РІ РїСЂРѕРіСЂР°РјРјСѓ, СЃРѕРґРµСЂР¶Р°С‰СѓСЋ С‚РµСЃС‚С‹; 
+РІСЃР»РµРґСЃС‚РІРёРµ СЌС‚РѕРіРѕ РєРѕРґ РЅРµРѕР±С…РѕРґРёРјРѕ РѕС‚РїСЂР°РІР»СЏС‚СЊ РІ С„Р°Р№Р»Рµ СЃРѕ СЃС‚СЂРѕРіРѕ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРј РёРјРµРЅРµРј!
+*/
 #include <iostream>
 #include <vector>
 #include <string>
+//#include <assert.h>
+
 class BigInteger;
 bool operator < (const BigInteger& x, const BigInteger& y);
 bool operator == (const BigInteger& x, const BigInteger& y);
@@ -38,24 +42,33 @@ const BigInteger operator / (const BigInteger& x, const BigInteger& y);
 class BigInteger {
 private:
 	std::vector<long long> place;
-	long long max_number = 1000000000;
-	int n = 9;// т.к 10 в  9
-	int size_of_place = 0;
-	bool sign;//true это + или 0. false это -
+	long long max_number = 1000000;
+	size_t n = 6;// С‚Р°Рє РєР°Рє С‚С‹ 10 РІ 9(Р±С‹Р»Рѕ РёР·РЅР°С‡Р°Р»Р°СЊРЅРѕ), РЅРѕ СЏ РїРµСЂРµРґР°Р»Р°Р» РІСЃРµ РІ 6, С‚Р°Рє РєР°Рє РЅР° СѓРјРЅРѕР¶РµРЅРёРё Р±С‹Р»Рѕ РїРµСЂРµРїРѕР»РЅРµРЅРёРµ
+	size_t size_of_place = 0;
+	bool sign = true;//tru РµСЃР»Рё + РёР»Рё 0
 public:
+	BigInteger(const BigInteger& x) {
+		place = x.place;
+		sign = x.sign;
+		size_of_place = place.size();
+	}
+	/* BigInteger(const BigInteger&& x) {
+		 place = x.place;
+		 sign = x.sign;
+		 size_of_place = place.size();
+	 }*/
 	BigInteger() {
+		sign = true;
 		place.push_back(0);
 	}
 	BigInteger(int x) {
 		int y = std::abs(x);
-		if (x < 0) {
-			sign = false;
-		}
-		else {
+		sign = x >= 0;
+		if (x == -0) {
 			sign = true;
 		}
 		if (y >= max_number) {
-			place.push_back(y - max_number);
+			place.push_back(y % max_number);
 			place.push_back(y / max_number);
 			size_of_place = 2;
 		}
@@ -65,71 +78,65 @@ public:
 		}
 	}
 	BigInteger(std::string& s) {
-		char now[9];
-		if (s[0] != '-') {
+		int number;
+		if (s.size() == 2 && s[0] == '-' && s[1] == '0') {
 			sign = true;
-			int i = 0;
-			ptrdiff_t j = s.size() - 1;
-			for (j; j >= 0; --j) {
-				++i;
-				now[n - i] = s[j];
-				if (i == n) {
-					int number = std::atoi(now);
-					place.push_back(number);
-					i = 0;
-				}
-				if (j == 0 && i != 0) {
-					int number = 0;
-					int POW = 1;
-					for (int l = 0; l < i; ++l) {
-						number += ((now[n - 1 - l] - '0') * POW);
-						POW *= 10;
-					}
-					place.push_back(number);
-				}
-			}
+			place.assign(1, 0);
+			return;
+		}
+		if (s[0] == '-') {
+			sign = false;
+			s.erase(0, 1);
 		}
 		else {
-			sign = false;
-			int i = 0;
-			ptrdiff_t j = s.size() - 1;
-			for (j; j >= 1; --j) {
-				++i;
-				now[n - i] = s[j];
-				if (i == n) {
-					int number = std::atoi(now);
-					place.push_back(number);
-					i = 0;
-				}
-				if (j == 1 && i != 0) {
-					int number = 0;
-					int POW = 1;
-					for (int l = 0; l < i; ++l) {
-						number += ((now[n - 1 - l] - '0') * POW);
-						POW *= 10;
-					}
-					place.push_back(number);
-				}
+			sign = true;
+		}
+		if (s.size() % 6 == 0) {
+			number = s.size() / 6;
+		}
+		else {
+			number = s.size() / 6 + 1;
+		}
+		size_t size1 = s.size() % 6;
+		size_t size = 0;
+		std::vector<long long> now(number);
+		long long sum = 0;
+		int k = 0;
+		for (size_t i = 0; i < s.size(); ++i) {
+			++k;
+			sum *= 10;
+			sum += (s[i] - '0');
+			if (size1 == i + 1 && size1 != 0) {
+				now[number - 1] = sum;
+				sum = 0;
+				++size;
+				k = 0;
+			}
+			if (k % 6 == 0 && i >= 5) {
+				now[number - 1 - size] = sum;
+				sum = 0;
+				++size;
 			}
 		}
-		size_of_place = place.size();
+		place = now;
 	}
+
 	bool signOut() const {
 		return(sign);
 	}
-	std::string toString() {
+
+	std::string toString() const {
 		std::string s;
-		if (sign == false) {
+		if (!sign) {
 			s += "-";
 		}
-		for (int i = place.size() - 1; i >= 0; --i) {
+		for (long long i = static_cast<long long>(place.size() - 1); i >= 0; --i) {
 			std::string little_string = std::to_string(place[i]);
-			if (i == place.size() - 1) {
+			if (i == static_cast<long long>(place.size() - 1)) {
 				s += little_string;
 			}
 			else {
-				int j = n - little_string.size();
-				for (j; j > 0; --j) {
+				for (int j = static_cast<int>(n - little_string.size()); j > 0; --j) {
 					s += "0";
 				}
 				s += little_string;
@@ -137,14 +144,19 @@ public:
 		}
 		return(s);
 	}
+
 	BigInteger operator -() const {
 		BigInteger x = *this;
-		x.sign = (x.sign == true ? false : true);
+		if (*this == 0) {
+			return(*this);
+		}
+		x.sign = !x.sign;
 		return(x);
 	}
+
 	BigInteger& PlusABS(const BigInteger& x) {
-		int perenos = 0;
-		int  i = 0;
+		long long perenos = 0;
+		size_t i = 0;
 		while (x.place.size() > i || place.size() > i) {
 			if (place.size() <= i) {
 				place.push_back(0);
@@ -169,10 +181,11 @@ public:
 		size_of_place = place.size();
 		return *this;
 	}
-	std::vector<long long> MinusABS(const BigInteger& x, const BigInteger& y) {//тут мы будем разницу по модулю искать
+
+	std::vector<long long> MinusABS(const BigInteger& x, const BigInteger& y) {//ГІГіГІ Г¬Г» ГЎГіГ¤ГҐГ¬ Г°Г Г§Г­ГЁГ¶Гі ГЇГ® Г¬Г®Г¤ГіГ«Гѕ ГЁГ±ГЄГ ГІГј
 		std::vector<long long> now;
 		int dop = 0;
-		int i = 0;
+		size_t i = 0;
 		while (y.place.size() > i) {
 			if (x.place[i] - dop < y.place[i]) {
 				now.push_back(x.place[i] + max_number - dop - y.place[i]);
@@ -184,7 +197,7 @@ public:
 			}
 			++i;
 		}
-		for (i; i < x.place.size(); ++i) {
+		for (; i < x.place.size(); ++i) {
 			if ((i + 1 == x.size_of_place) && (x.place[i] - dop == 0)) {
 			}
 			else if (x.place[i] - dop >= 0) {
@@ -196,7 +209,8 @@ public:
 				dop = 1;
 			}
 		}
-		for (int j = now.size() - 1; j >= 0; --j) {
+		//СѓР±РёСЂР°РµРј РїРµСЂРІС‹Рµ РЅСѓР»Рё
+		for (int j = static_cast<int>(now.size() - 1); j >= 0; --j) {
 			if (now[j] == 0 && j != 0) {
 				now.pop_back();
 			}
@@ -206,12 +220,13 @@ public:
 		}
 		return(now);
 	}
+
 	BigInteger& operator +=(const BigInteger& x) {
 		BigInteger& y = *this;
-		if ((x.sign == true && sign == true) || (x.sign == false && sign == false)) {
+		if ((x.sign && sign) || (!x.sign && !sign)) {
 			return(PlusABS(x));
 		}
-		else if (sign == false && x.sign == true) {
+		else if (!sign && x.sign) {
 			if (-y > x) {
 				place = MinusABS(y, x);
 				size_of_place = place.size();
@@ -223,7 +238,7 @@ public:
 			}
 			return *this;
 		}
-		else if (sign == true && x.sign == false) {
+		else if (sign && !x.sign) {
 			if (-y <= x) {
 				place = MinusABS(y, x);
 				size_of_place = place.size();
@@ -235,151 +250,212 @@ public:
 			}
 			return *this;
 		}
+		return *this;
 	}
-	BigInteger shift(BigInteger& x, int m) {
-		for (int i = 0; i < m; ++i) {
-			x.place.push_back(0);
+
+	std::vector<long long> summa_for2(std::vector<long long>& a, std::vector<long long>& b) {
+		std::vector<long long> res(a.size(), 0);
+		for (size_t i = 0; i < a.size(); ++i) {
+			res[i] += (a[i] + b[i]);
 		}
-		for (int i = x.place.size() - 1; i >= m; --i) {
-			x.place[i] = x.place[i - m];
-		}
-		for (int i = 0; i < m; ++i) {
-			x.place[i] = 0;
-		}
-		x.size_of_place = x.place.size();
-		return(x);
+		return(res);
 	}
-	std::vector<long long> easy_multiplication(const BigInteger& x, const BigInteger& y) {
-		//делаю наивное умножение
-		long long a = x.place[0] * y.place[0];
-		long long b = a / 1000000000;
-		long long c = a % 1000000000;
-		std::vector<long long> d;
-		d.push_back(c);
-		if (b > 0) {
-			d.push_back(b);
+
+	void Difference_for_3(std::vector<long long>& a, std::vector<long long>& b, std::vector<long long>& c, size_t& size1) {
+
+		for (size_t i = 0; i < size1; ++i) {
+			a[i] -= (b[i] + c[i]);
 		}
-		return(d);
 	}
-	BigInteger& operator *=(const BigInteger& x) {//это моя каратсуба
-		BigInteger x1 = (x >= 0 ? x : -x);
-		BigInteger y1 = (*this >= 0 ? *this : -*this);
+
+	void summ_for_result(std::vector<long long>& a, std::vector<long long>& b) {
+		for (size_t i = 0; i < b.size(); ++i) {
+			a[i] += b[i];
+		}
+	}
+
+	void shift(std::vector<long long>& result, std::vector<long long>& z, size_t index) {
+		for (size_t i = index; i < result.size() / 2 + index; ++i) {//СЃРјРµС‰РµРЅРёРµ РЅР° m
+			result[i] += z[i - index];
+		}
+	}
+
+	std::vector<long long> Karatsuba(std::vector<long long>& First, std::vector<long long>& Second) {
+		size_t size1 = First.size();
+		//СЃРЅР°С‡Р°Р»Р° СЃРјРѕС‚СЂРёРј РјРѕР¶РЅРѕ Р»Рё РїСЂРёРјРµРЅРёС‚СЊ РЅР°РёР°РІРЅРѕРµ СѓРјРЅРѕР¶РµРЅРёРµ
+		if (size1 <= 2) {
+			return(easy_multiplication(First, Second));
+		}
+		else {
+			// РёРЅР°С‡Рµ РЅР°С‡РёРЅР°РµРј РґРµР»Р°С‚СЊ Р°Р»РіРѕСЂРёС‚Рј РєР°СЂР°С†СѓР±С‹
+			size_t m = First.size() / 2;//РјС‹ РѕРґРёРЅ СЂР°Р· СЃРґРµР»Р°Р»Рё РЅРѕСЂРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ РєСЂР°С‚РЅС‹Р№ 2, Р° Р·Р°С‚РµРј РѕРЅ Р±СѓРґРµС‚ РїРѕСЃС‚РѕСЏРЅРЅРѕ РєСЂР°С‚РµРЅ 2 РёР»Рё СЂР°РІРµРЅ 1
+			std::vector<long long> a1(First.begin() + m, First.end());
+			std::vector<long long>& a0 = First;
+			a0.resize(m);
+			std::vector<long long> b1(Second.begin() + m, Second.end());
+			std::vector<long long>& b0 = Second;
+			b0.resize(m);
+			//A * B = A0 * B0 + (( A0 + A1 ) * ( B0 + B1 ) вЂ” A0 * B0 вЂ” A1 * B1 ) * BASEm + A1 * B1 * BASE2 * m
+			std::vector<long long>z0 = summa_for2(a0, a1);
+			std::vector<long long>z1 = summa_for2(b0, b1);
+			std::vector<long long> z2 = Karatsuba(a0, b0);
+			std::vector<long long> z3 = Karatsuba(a1, b1);
+			std::vector<long long> z4 = Karatsuba(z0, z1);//Сѓ РЅРµРіРѕ РґР»РёРЅР° Р±СѓРґРµС‚ size1=2*m
+			Difference_for_3(z4, z2, z3, size1);
+			std::vector<long long> result(2 * size1);//С‚Р°РєРѕРіРѕ СЂР°Р·РјРµСЂР°, С‚Р°Рє РєР°Рє СЂР°Р·РјРµСЂ z3 2m=size1,Рё z3 РґРµР»Р°РµС‚ СЃРјРµС‰РµРЅРёРµ РЅР° 2m
+			shift(result, z4, m);//СЃРјРµС‰РµРЅРёРµ РЅР° m
+			shift(result, z3, m * 2);//СЃРјРµС‰РµРЅРёРµ РЅР° 2m
+			summ_for_result(result, z2);
+			return(result);
+		}
+	}
+
+	std::vector<long long> easy_multiplication(std::vector<long long>& x, std::vector<long long>& y) {//static
+		std::vector<long long> result((x.size() + y.size()), 0);
+		for (size_t i = 0; i < x.size(); ++i) {
+			for (size_t j = 0; j < y.size(); ++j) {
+				result[i + j] += (x[i] * y[j]);
+			}
+		}
+		return(result);
+	}
+
+	void return_to_normal_appearance(std::vector<long long>& result) {
+		long long perenos = 0;
+		long long now = 0;
+		for (size_t i = 0; i < result.size() - 1; ++i) {
+			if (result[i] < 0) {
+				long long k = 0;//СЃРєРѕР»СЊРєРѕ СЂР°Р·СЂСЏРґРѕРІ РЅР°РґРѕ Р·Р°Р±СЂР°С‚СЊ
+				while (-result[i] > k* max_number) {
+					++k;
+				}
+				result[i] += max_number * k;
+				result[i + 1] -= k;
+			}
+			else {
+				now = (result[i]) % max_number;
+				perenos = result[i] / max_number;
+				result[i + 1] += perenos;
+				result[i] = now;
+			}
+		}
+		size_t i = result.size() - 1;
+		while (result[i] >= max_number) {
+			result.push_back(result[i] / max_number);
+			result[i] %= max_number;
+			++i;
+		}
+		//СѓР±РёСЂР°РµРј РїРµСЂРІС‹Рµ 0 РµСЃР»Рё РѕРЅРё РµСЃС‚СЊ
+		for (int j = static_cast<int>(result.size() - 1); j >= 0; --j) {
+			if (result[j] == 0 && j != 0) {
+				result.pop_back();
+			}
+			else {
+				break;
+			}
+		}
+	}
+
+	BigInteger& operator *=(const BigInteger& x) {//ГЅГІГ® Г¬Г®Гї ГЄГ Г°Г ГІГ±ГіГЎГ 
 		bool sign_for_this = true;
-		if ((sign == false && x.sign == true) || (sign == true && x.sign == false)) {
+		if ((!sign && x.sign) || (sign && !x.sign)) {
 			sign_for_this = false;
 		}
-		else if (sign == false && x.sign == false) {
+		else if (!sign && !x.sign) {
 			sign_for_this = true;
 		}
-		int size1 = x1.size_of_place;
-		int size2 = y1.size_of_place;
-		int size3 = size1;
+		if (x == 0 || *this == 0) {
+			sign = true;
+			place.resize(1);
+			place[0] = 0;
+		}
+		std::vector<long long> First = place;
+		std::vector<long long> Second = x.place;
+		size_t size1 = First.size();
+		size_t size2 = Second.size();
+		if (size1 <= 1 && size2 <= 1) {
+			std::vector<long long> res = (easy_multiplication(First, Second));
+			return_to_normal_appearance(res);
+			place = res;
+			sign = sign_for_this;
+			return(*this);
+		}
 		if (size1 < size2) {
-			size3 = size2;
+			size1 = size2;
 		}
-		if (size3 % 2 == 1) {
-			++size3;
+		//РёС‰РµРј Р±Р»РёР¶Р°СЋС‰СѓСЋ СЃС‚РµРїРµРЅСЊ 2 Рє size1
+		size_t stepen = 2;
+		while (stepen < size1) {
+			stepen *= 2;
 		}
-		for (int i = 0; i < (size3 - size1); ++i) {
-			x1.place.push_back(0);
-		}
-		for (int i = 0; i < (size3 - size2); ++i) {
-			y1.place.push_back(0);
-		}
-		int m = size3 / 2;
-		//A * B = A0 * B0(z0) + (( A0 + A1 )z2 * ( B0 + B1 )z3 — A0 * B0z0 — A1 * B1 z1) * BASEm + A1 * B1z1 * BASE2 * m
-		BigInteger a0 = x1;
-		BigInteger a1 = x1;
-		a1.place.clear();
-		a0.place.resize(m);
-		a0.size_of_place = m;
-		for (int i = m; i < size3; ++i) {
-			a1.place.push_back(x1.place[i]);
-		}
-		a1.size_of_place = m;
+		size1 = stepen;
+		First.resize(size1, 0);
+		Second.resize(size1, 0);
+		std::vector<long long> result = Karatsuba(First, Second);
+		return_to_normal_appearance(result);
+		place = result;
+		sign = sign_for_this;
+		return(*this);
+	}
 
-		BigInteger b0 = y1;
-		BigInteger b1 = y1;
-		b1.place.clear();
-		b0.place.resize(m);
-		b0.size_of_place = m;
-		for (int i = m; i < size3; ++i) {
-			b1.place.push_back(y1.place[i]);
-		}
-		b1.size_of_place = m;
-		BigInteger z0 = a0;
-		BigInteger z1 = a1;
-		BigInteger z2 = a0;
-		BigInteger z3 = b0;
-		if (a0.place.size() == 1 && b0.place.size() == 1) {
-			z0.place = easy_multiplication(a0, b0);
-			z0.size_of_place = z0.place.size();
-		}
-		else {
-			z0 *= b0;
-		}
-		if (a1.place.size() == 1 && b1.place.size() == 1) {
-			z1.place = easy_multiplication(a1, b1);
-			z1.size_of_place = z1.place.size();
-		}
-		else {
-			z1 *= b1;
-		}
-		z2 += a1;
-		z3 += b1;
-		if (z2.place.size() == 1 && z3.place.size() == 1) {
-			z2.place = easy_multiplication(z2, z3);
-			z2.size_of_place = z2.place.size();
-		}
-		else {
-			z2 *= z3;
-		}
-		for (int i = z2.place.size() - 1; i >= 0; --i) {
-			if (z2.place[i] == 0 && i != 0) {
-				z2.place.pop_back();
+	void return_to_normal_view_for_prefix_incrementand_decrement() {//СЂР°Р±РѕС‚Р°РµС‚, РµСЃР»Рё РјС‹ Р·РЅР°РµРј, С‡С‚Рѕ С‡РёСЃР»Рѕ РІ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РїРѕР»РѕР¶РёРµР»СЊРЅРѕРµ
+		long long perenos = 0;
+		long long now = 0;
+		for (size_t i = 0; i < place.size() - 1; ++i) {
+			if (place[i] < 0) {
+				long long k = 0;//СЃРєРѕР»СЊРєРѕ СЂР°Р·СЂСЏРґРѕРІ РЅР°РґРѕ Р·Р°Р±СЂР°С‚СЊ
+				while (-place[i] > k* max_number) {
+					++k;
+				}
+				place[i] += max_number * k;
+				place[i + 1] -= k;
 			}
 			else {
-				break;
+				now = (place[i]) % max_number;
+				perenos = place[i] / max_number;
+				place[i + 1] += perenos;
+				place[i] = now;
 			}
 		}
-		for (int i = z1.place.size() - 1; i >= 0; --i) {
-			if (z1.place[i] == 0 && i != 0) {
-				z1.place.pop_back();
-			}
-			else {
-				break;
-			}
+		size_t i = place.size() - 1;
+		while (place[i] >= max_number) {
+			place.push_back(place[i] / max_number);
+			place[i] %= max_number;
+			++i;
 		}
-		for (int i = z0.place.size() - 1; i >= 0; --i) {
-			if (z0.place[i] == 0 && i != 0) {
-				z0.place.pop_back();
-			}
-			else {
-				break;
-			}
-		}
-		z2 -= z0;
-		z2 -= z1;
-		z2 = shift(z2, m);
-		z1 = shift(z1, size3);
-		*this = z0 + z2;
-		*this += z1;
-		for (int i = place.size() - 1; i >= 0; --i) {
-			if (place[i] == 0 && i != 0) {
+		//СѓР±РёСЂР°РµРј РїРµСЂРІС‹Рµ 0 РµСЃР»Рё РѕРЅРё РµСЃС‚СЊ
+		for (int j = static_cast<int>(place.size() - 1); j >= 0; --j) {
+			if (place[j] == 0 && j != 0) {
 				place.pop_back();
 			}
 			else {
 				break;
 			}
 		}
-		sign = sign_for_this;
-		return(*this);
-	}
-	BigInteger& operator ++() {
-		return(*this += 1);
 	}
 
-	const  BigInteger operator ++(int) {
+	BigInteger& operator ++() {
+		if (sign) {
+			++place[0];
+			if (place[0] >= max_number) {
+				return_to_normal_view_for_prefix_incrementand_decrement();
+				size_of_place = place.size();
+			}
+		}
+		if (!sign) {
+			--place[0];
+			if (place[0] < 0) {
+				return_to_normal_view_for_prefix_incrementand_decrement();
+				size_of_place = place.size();
+			}
+			if (place[0] == 0 && place.size() == 1) {
+				sign = true;
+			}
+		}
+		return(*this);
+	}
+
+	const BigInteger operator ++(int) {
 		BigInteger x = *this;
 		*this += 1;
 		return(x);
@@ -387,10 +463,10 @@ public:
 
 	BigInteger& operator -=(const BigInteger& x) {
 		BigInteger& y = *this;
-		if (sign == false && x.sign == true) {
+		if (!sign && x.sign) {
 			return(PlusABS(x));
 		}
-		else if (sign == false && x.sign == false) {
+		else if (!sign && !x.sign) {
 			if (y < x) {
 				place = MinusABS(y, x);
 				size_of_place = place.size();
@@ -402,10 +478,10 @@ public:
 			}
 			return *this;
 		}
-		else if (sign == true && x.sign == false) {
+		else if (sign && !x.sign) {
 			return(PlusABS(x));
 		}
-		else if (sign == true && x.sign == true) {
+		else if (sign && x.sign) {
 			if (y >= x) {
 				place = MinusABS(y, x);
 				size_of_place = place.size();
@@ -417,31 +493,56 @@ public:
 			}
 			return *this;
 		}
+		return *this;
 	}
 
 	BigInteger& operator --() {
-		return(*this -= 1);
+		if (!sign) {
+			++place[0];
+			if (place[0] >= max_number) {
+				return_to_normal_view_for_prefix_incrementand_decrement();
+				size_of_place = place.size();
+			}
+		}
+		if (sign) {
+			--place[0];
+			if (place[0] == -1 && place.size() == 1) {
+				sign = false;
+				place[0] = 1;
+			}
+			else if (place[0] < 0) {
+				return_to_normal_view_for_prefix_incrementand_decrement();
+				size_of_place = place.size();
+			}
+		}
+		return(*this);
 	}
 
-	const  BigInteger operator --(int) {
+	const BigInteger operator --(int) {
 		BigInteger x = *this;
 		*this -= 1;
 		return(x);
 	}
 
-	BigInteger div_on2(const BigInteger& x, const BigInteger& y) {//деление в столбик на 2 ручками
+	BigInteger div_on2(const BigInteger& x, const BigInteger& y) {//Г¤ГҐГ«ГҐГ­ГЁГҐ Гў Г±ГІГ®Г«ГЎГЁГЄ Г­Г  2 Г°ГіГ·ГЄГ Г¬ГЁ
+		if (x.place.size() == 1 && y.place.size() == 1) {
+			long long sum = x.place[0] + y.place[0];
+			return(sum / 2);
+		}
 		BigInteger sum = x + y;
 		std::vector<long long> result1;
-		long long remains = 0;//остаток
-		for (int i = sum.place.size() - 1; i >= 0; --i) {
+		long long remains = 0;//Г®Г±ГІГ ГІГ®ГЄ
+		for (long long i = static_cast<long long>(sum.place.size() - 1); i >= 0; --i) {
 			result1.push_back((sum.place[i] + remains * max_number) / 2);
 			remains = (sum.place[i] + remains * max_number) % 2;
 		}
 		sum.place.resize(result1.size());
-		for (int i = 0; i < result1.size(); ++i) {
+		// РїРµСЂРµРѕРІСЂР°С‡РёРІР°СЋ РІРµРєС‚РѕСЂ
+		for (size_t i = 0; i < result1.size(); ++i) {
 			sum.place[i] = result1[result1.size() - 1 - i];
 		}
-		for (int i = sum.place.size() - 1; i >= 0; --i) {
+		// РёР·Р±Р°РІР»СЏСЋСЃСЊ РѕС‚ РІРµРґ РЅСѓР»РµР№, РІРґСЂСѓРі РѕРЅРё РµСЃС‚СЊ
+		for (long long i = static_cast<long long>(sum.place.size() - 1); i >= 0; --i) {
 			if (sum.place[i] == 0 && i != 0) {
 				sum.place.pop_back();
 			}
@@ -452,43 +553,84 @@ public:
 		sum.size_of_place = sum.place.size();
 		return(sum);
 	}
-
+	long long bin_search_number(BigInteger now, BigInteger divider) {
+		BigInteger l = -1;
+		BigInteger r = now + 1;
+		++r;
+		while (l < r - 1) {
+			BigInteger m = div_on2(r, l);
+			if (m * divider > now) {
+				r = m;
+			}
+			else {
+				l = m;
+			}
+		}
+		if (r * divider <= now) {
+			return(r.place[0]);
+		}
+		else {
+			return(l.place[0]);
+		}
+	}
 	BigInteger& operator /=(const BigInteger& y) {
 		bool sign_result = true;
-		if ((sign == true && y.sign == false) || (sign == false && y.sign == true)) {
+		if ((sign && !y.sign) || (!sign && y.sign)) {
 			sign_result = false;
 		}
 		BigInteger divider = (y >= 0 ? y : -y);
 		BigInteger dividend = (*this >= 0 ? *this : -*this);
-		BigInteger left = 1;
-		BigInteger right = dividend;
-		BigInteger result;
 		if (dividend == 0 || dividend < divider) {
 			place.resize(1);
 			place[0] = 0;
+			size_of_place = 1;
+			sign = true;
+			return(*this);
+		}
+		if (dividend == divider) {
+			place.resize(1);
+			place[0] = 1;
+			sign = sign_result;
+			size_of_place = 1;
+			return(*this);
+		}
+		if (divider == 1) {
+			place = dividend.place;
+			size_of_place = place.size();
 			sign = sign_result;
 			return(*this);
 		}
-		while (left <= right)
-		{
-			BigInteger mid = div_on2(left, right);
-			if (dividend == mid * divider) {
-				result = mid;
-				break;
-			}
-			if (dividend < divider * mid) {
-				right = mid - 1;
+
+		//РґРµР»РµРЅРёРµ РІ СЃС‚РѕР»Р±РёРє
+		std::vector<long long> place_itog;
+		BigInteger perenos = 0;
+		BigInteger now;
+		BigInteger itog = 0;
+		for (long long i = static_cast<long long>(dividend.place.size() - 1); i >= 0; --i) {
+			now = dividend.place[i] + perenos * max_number;
+			if (now >= divider) {
+				long long number_now = bin_search_number(now, divider);
+				place_itog.push_back(number_now);
+				perenos = now - divider * number_now;
 			}
 			else {
-				left = mid + 1;
-				result = mid;
+				place_itog.push_back(0);
+				perenos = now;
 			}
 		}
-		*this = result;
+		long long nomer_thefirstNo0 = -1;
+		for (size_t i = 0; i < place_itog.size(); ++i) {
+			if (place_itog[i] != 0 && nomer_thefirstNo0 == -1) {
+				nomer_thefirstNo0 = i;
+				place.resize(place_itog.size() - i);
+			}
+			if (nomer_thefirstNo0 != -1) {
+				place[place.size() - 1 - i + nomer_thefirstNo0] = place_itog[i];
+			}
+		}
 		sign = sign_result;
-		return(*this);
+		return (*this);
 	}
-
 	BigInteger& operator %=(const BigInteger& y) {
 		*this -= (y * (*this / y));
 		return(*this);
@@ -501,18 +643,9 @@ public:
 	explicit operator bool() {
 		return !(*this == 0);
 	}
-	explicit operator double() {
-		double x;
-		int POW = 1;
-		for (int i = 0; i < place.size(); ++i) {
-			x += (place[i] * POW);
-			POW *= max_number;
-		}
-		return(x);
-	}
 };
-// //КОНЕЦ КЛАССА
-std::ostream& operator <<(std::ostream& out, BigInteger& x) {//cout
+// РєРѕРЅРµС† РєР»Р°СЃСЃР° BigInt
+std::ostream& operator <<(std::ostream& out, const BigInteger& x) {//cout
 	out << x.toString();
 	return(out);
 }
@@ -523,7 +656,7 @@ std::istream& operator >>(std::istream& in, BigInteger& x) {
 	x = BigInteger(s);
 	return(in);
 }
-bool MAX_OF_arrays(const std::vector<long long>& a, const std::vector<long long>& b) {//сравнение двух массов, выводим true, если левый меньше 
+bool MAX_OF_arrays(const std::vector<long long>& a, const std::vector<long long>& b) {//Г±Г°Г ГўГ­ГҐГ­ГЁГҐ Г¤ГўГіГµ Г¬Г Г±Г±Г®Гў, ГўГ»ГўГ®Г¤ГЁГ¬ true, ГҐГ±Г«ГЁ Г«ГҐГўГ»Г© Г¬ГҐГ­ГјГёГҐ
 	if (a.size() < b.size()) {
 		return(true);
 	}
@@ -531,8 +664,7 @@ bool MAX_OF_arrays(const std::vector<long long>& a, const std::vector<long long>
 		return(false);
 	}
 	else {
-		ptrdiff_t i = a.size() - 1;
-		for (i; i >= 0; --i) {
+		for (auto i = static_cast<long long>(a.size() - 1); i >= 0; --i) {
 			if (a[i] < b[i]) {
 				return(true);
 			}
@@ -548,13 +680,13 @@ bool MAX_OF_arrays(const std::vector<long long>& a, const std::vector<long long>
 bool operator < (const BigInteger& x, const BigInteger& y) {
 	const std::vector<long long> a = x.arrays();
 	const std::vector<long long> b = y.arrays();
-	if (x.signOut() == true && y.signOut() == true) {
+	if (x.signOut() && y.signOut()) {
 		return (MAX_OF_arrays(a, b));
 	}
-	else if (x.signOut() == true && y.signOut() == false) {
+	else if (x.signOut() && !y.signOut()) {
 		return(false);
 	}
-	else if (x.signOut() == false && y.signOut() == true) {
+	else if (!x.signOut() && y.signOut()) {
 		return(true);
 	}
 	else {
@@ -607,24 +739,28 @@ const BigInteger operator % (const BigInteger& x, const BigInteger& y) {
 	return(z %= y);
 }
 
-//Закончилась часть, связнная с BigInteger
+//РќР°С‡Р°Р»Рѕ С‡Р°СЃС‚Рё Rational
 BigInteger Euclid(BigInteger x, BigInteger y) {
-	x = (x ? x >= 0 : -x);
-	y = (y ? y >= 0 : -y);
-	while (x != y) {
+	x = (x >= 0 ? x : -x);
+	y = (y >= 0 ? y : -y);
+	while (x != 0 && y != 0) {
 		if (x > y) {
-			x -= y;
+			x %= y;
 		}
 		else {
-			y -= x;
+			y %= x;
 		}
 	}
-	return(x);
+	return(x + y);
 }
 void NOD(BigInteger& numerator, BigInteger& denominator) {
-	BigInteger NOD_Number = Euclid(numerator, denominator);
-	numerator /= NOD_Number;
-	denominator /= NOD_Number;
+	if (numerator != 0) {
+		BigInteger NOD_Number = Euclid(numerator, denominator);
+		if (NOD_Number != 1) {
+			numerator /= NOD_Number;
+			denominator /= NOD_Number;
+		}
+	}
 	if (numerator < 0 && denominator < 0) {
 		numerator /= -1;
 		denominator /= -1;
@@ -632,43 +768,60 @@ void NOD(BigInteger& numerator, BigInteger& denominator) {
 }
 class Rational {
 private:
-	BigInteger numerator;//числитель
-	BigInteger denominator;//знаменатель
-	bool sign;
+	BigInteger numerator;//С‡РёСЃР»РёС‚РµР»СЊ
+	BigInteger denominator;//Р·РЅР°РјРµРЅР°С‚РµР»СЊ
+	bool sign = true;
 public:
-	Rational(int x) {
-		denominator = 1;
-		numerator = x;
-		sign = true ? x >= 0 : false;
+	Rational(const Rational& x) {
+		denominator = x.denominator;
+		numerator = x.numerator;
+		sign = x.sign;
 	}
-	Rational(BigInteger x) {
-		denominator = 1;
+	Rational(const int& x, const int& y = 1) {
+		denominator = y;
 		numerator = x;
-		sign = numerator.signOut;
+		if ((x > 0 && y < 0) || (x < 0 && y>0)) {
+			sign = false;
+		}
+		if (x == 0) {
+			sign = true;
+		}
+	}
+	Rational(const BigInteger& x, const  BigInteger& y = 1) {
+		denominator = y;
+		numerator = x;
+		if ((x.signOut() && !y.signOut()) || (!x.signOut() && y.signOut())) {
+			sign = false;
+		}
 	}
 	Rational() {
 		denominator = 1;
 		sign = true;
 		numerator = 0;
 	}
-	std::string toString() {
-		NOD(numerator, denominator);
-		func_sign(*this);
-		BigInteger numeratorABS = (numerator ? numerator >= 0 : -numerator);
-		BigInteger denominatorABS = (denominator ? denominator >= 0 : -denominator);
+	std::string toString() const {
+
+		//СѓР±СЂР°Р» РїСЂРёРІРµРґРµРЅРёРµ Рє РѕР±С‰РµРјСѓ
+		BigInteger numeratorABS = (numerator >= 0 ? numerator : -numerator);
+		BigInteger denominatorABS = (denominator >= 0 ? denominator : -denominator);
 		std::string s;
-		if (sign == false) {
+		if (!sign) {
 			s += "-";
 		}
-		if (numeratorABS % denominatorABS == 0) {
+		if (numerator == 0) {
+			s += "0";
+			return(s);
+		}
+		if (numeratorABS % denominatorABS == 0 && numeratorABS >= denominatorABS) {
 			BigInteger quotient = numeratorABS / denominatorABS;
-			s += (quotient.toString);
+			s += (quotient.toString());
 		}
 		else {
-			s += (numeratorABS.toString);
+			s += (numeratorABS.toString());
 			s += "/";
-			s += (denominatorABS.toString);
+			s += (denominatorABS.toString());
 		}
+		return(s);
 	}
 	const BigInteger& numerator_out() const {
 		return(numerator);
@@ -680,92 +833,93 @@ public:
 		numerator = (numerator * y.denominator) + (denominator * y.numerator);
 		denominator *= y.denominator;
 		NOD(numerator, denominator);
-		func_sign(*this);
+		func_sign();
 		return(*this);
 	}
 	Rational& operator -=(const Rational& y) {
 		numerator = (numerator * y.denominator) - (denominator * y.numerator);
 		denominator *= y.denominator;
 		NOD(numerator, denominator);
-		func_sign(*this);
+		func_sign();
 		return(*this);
 	}
 	Rational& operator *=(const Rational& y) {
 		numerator *= y.numerator;
 		denominator *= y.denominator;
 		NOD(numerator, denominator);
-		func_sign(*this);
+		func_sign();
 		return(*this);
 	}
 	Rational& operator /=(const Rational& y) {
 		numerator *= y.denominator;
 		denominator *= y.numerator;
 		NOD(numerator, denominator);
-		func_sign(*this);
+		func_sign();
 		return(*this);
 	}
-	void func_sign(Rational& x) {
-		if (x.numerator < 0 && x.denominator < 0) {
-			x.sign = true;
+	void func_sign() {
+		if (numerator < 0 && denominator < 0) {
+			sign = true;
 		}
-		else if (x.numerator >= 0 && x.denominator > 0) {
-			x.sign = true;
-		}
-		else {
-			x.sign = false;
-		}
+		else sign = numerator >= 0 && denominator > 0;
 	}
 
 	Rational operator -() const {
 		Rational x = *this;
-		x.sign = (x.sign == true ? false : true);
+		x.numerator = -(numerator);
 		return(x);
 	}
 
 	explicit operator double() {
-		return(double(numerator) / double(denominator));
+		return(std::stod(asDecimal(17)));
 	}
-	std::string asDecimsl(size_t precision = 0) {
-		NOD(numerator, denominator);
-		func_sign(*this);
-		BigInteger numeratorABS = (numerator ? numerator >= 0 : -numerator);
-		BigInteger denominatorABS = (denominator ? denominator >= 0 : -denominator);
+	std::string asDecimal(size_t precision = 0) const {
+		BigInteger numeratorABS = (numerator >= 0 ? numerator : -numerator);
+		BigInteger denominatorABS = (denominator >= 0 ? denominator : -denominator);
 		std::string s;
-		if (sign == false) {
+		if (!sign) {
 			s += "-";
 		}
 		BigInteger result = numeratorABS / denominatorABS;
-		s += (result.toString);
+		s += (result.toString());
 		if (precision == 0) {
 			return(s);
 		}
 		else {
-			s += ",";
+			s += ".";
 			BigInteger remains = numeratorABS % denominatorABS;
 			size_t i = 0;
 			while (i < precision) {
 				remains *= 10;
 				result = remains / denominatorABS;
-				s += (result.toString);
+				s += (result.toString());
 				remains = remains % denominatorABS;
+				++i;
 			}
 		}
+		return(s);
 	}
 };
 
 
-// Конец класса Rational
+// ГЉГ®Г­ГҐГ¶ ГЄГ«Г Г±Г±Г  Rational
 bool operator < (const Rational& x, const  Rational& y) {
 	const BigInteger xn = x.numerator_out();
 	const BigInteger yd = y.denominator_out();
 	const BigInteger yn = y.numerator_out();
 	const BigInteger xd = x.denominator_out();
-	if (xn * yd < yn * xd) {
-		return(true);
+	int k = 0;//СЃРєРѕР»СЊРєРѕ Сѓ РЅР°СЃ РѕС‚СЂС† Р·РЅР°РјРµРЅР°С‚РµР»РµР№
+	if (xd < 0)
+		++k;
+	if (yd < 0)
+		++k;
+	if (k % 2 == 0) {
+		return xn * yd < yn * xd;
 	}
 	else {
-		return(false);
+		return xn * yd > yn* xd;
 	}
+
 }
 
 bool operator > (const Rational& x, const  Rational& y) {
@@ -807,4 +961,3 @@ const Rational operator / (const Rational& x, const Rational& y) {
 	Rational z = x;
 	return(z /= y);
 }
-
